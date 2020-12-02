@@ -1,6 +1,8 @@
 extern crate getopts;
 use getopts::Options;
 use std::env;
+// Add all dependencies here
+
 
 fn usage(binary: &str, opts: Options) {
     let output_usage = format!("Usage: {} [options] DIR ", binary);

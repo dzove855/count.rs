@@ -56,9 +56,15 @@ fn files_recursive(directory: &str) -> Vec<String>{
     let mut dirs : Vec<String> = Vec::new();
     for dir in walkdir::WalkDir::new(directory){
         let dir = dir.unwrap().path().display().to_string();
-        if std::fs::metadata(&dir).unwrap().is_dir() {
-            dirs.push(dir);
+        if std::fs::metadata(&dir).is_ok() {
+            if std::fs::metadata(&dir).unwrap().is_dir() {
+                dirs.push(dir);
+            }
         }
+//        match std::fs::metadata(&dir).unwrap().is_dir() {
+//            OK(_) => dirs.push(dir),
+//            Err(_) => ()
+//        }
     }
     return dirs;
 }
@@ -76,7 +82,7 @@ fn main() {
     opts.optflag("h", "help", "print this help menu");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => { m }
-        Err(f) => { panic!(f.to_string()) }
+        Err(f) => { panic!("{}", f.to_string()) }
     };
 
     if matches.opt_present("h") {
